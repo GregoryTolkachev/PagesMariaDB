@@ -8,6 +8,11 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using PagesMariaDB.Models;
+using Microsoft.EntityFrameworkCore;
+
+
+
 
 namespace PagesMariaDB
 {
@@ -24,6 +29,10 @@ namespace PagesMariaDB
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddDbContext<StoreContext>(opt => opt.UseMySql(
+                Configuration.GetConnectionString("StoreContext"),
+                ServerVersion.FromString(Configuration.GetValue<string>("mariadb-version"))
+            ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
